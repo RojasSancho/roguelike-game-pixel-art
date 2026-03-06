@@ -60,13 +60,13 @@ class Player:
         pygame.draw.rect(surface, self.color, self.rect)
 
 class Enemy:
-    def __init__(self, width = 20, height = 20, speed = 2, color = (255, 255, 255)):
-        self.x = random.randint(10, 790)
-        self.y = random.randint(10, 590)
+    def __init__(self, screen_width, screen_height, width = 20, height = 20, speed = 2, color = (255, 255, 255)):
         self.width = width
         self.height = height
         self.speed = speed
         self.color = color
+        self.x = random.randint(self.width // 2, screen_width - self.width // 2)
+        self.y = random.randint(self.height // 2, screen_height - self.height // 2)
 
         self.rect = pygame.Rect(0, 0, width, height)
         self.rect.center = (self.x, self.y)
@@ -88,7 +88,7 @@ def main():
     background_color = (10, 10, 10)
 
     player = Player(width // 2, height // 2)
-    enemy = Enemy()
+    enemy = Enemy(width, height)
     print(player.x, player.y)
     print(enemy.x, enemy.y)
 

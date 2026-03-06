@@ -1,6 +1,18 @@
 import pygame
 import sys
 
+
+
+def clamp(value, min_value, max_value):
+    """Clamp a value between a minimum and maximum."""
+    if value < min_value:
+        return min_value
+
+    if value > max_value:
+        return max_value
+
+    return value
+
 # ===============
 # Classes
 # ===============
@@ -21,6 +33,7 @@ class Player:
 
     def move(self, keys, boundary_width, boundary_height):
 
+        # Move the player based on key input
         if keys[pygame.K_a]:
             self.x -= self.speed
 
@@ -33,32 +46,26 @@ class Player:
         if keys[pygame.K_s]:
             self.y += self.speed
 
-        # Clamp inside window
+        # Calculate half dimensions for boundary checking
         half_w = self.width // 2
         half_h = self.height // 2
 
-        if self.x < half_w:
-            self.x = half_w
-        if self.x > boundary_width - half_w:
-            self.x = boundary_width - half_w
+        # Ensure the player doesn't go out of bounds by clamping the position
+        self.x = clamp(self.x, half_w, (boundary_width - half_w))
+        self.y = clamp(self.y, half_h, (boundary_height - half_h))
 
-        if self.y < half_h:
-            self.y = half_h
-        if self.y > boundary_height - half_h:
-            self.y = boundary_height - half_h
-
+        # Update the rect position after moving
         self.rect.center = (self.x, self.y)
 
     def draw(self, surface):
         pygame.draw.rect(surface, self.color, self.rect)
-
 
 # ===============
 # Main Game Loop
 # ===============
 
 def main():
-    pygame.init()
+    pygame.init() # Initialize Pygame
 
     width, height = 800, 600
     screen = pygame.display.set_mode((width, height))
@@ -84,7 +91,7 @@ def main():
 
         player.draw(screen)
 
-        pygame.display.flip()
+        pygame.display.flip() # Update the display
         clock.tick(90)
 
 # Run the main function with error handling

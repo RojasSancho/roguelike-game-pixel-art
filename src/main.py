@@ -1,7 +1,6 @@
 import pygame
 import sys
-
-
+import random
 
 def clamp(value, min_value, max_value):
     """Clamp a value between a minimum and maximum."""
@@ -60,6 +59,21 @@ class Player:
     def draw(self, surface):
         pygame.draw.rect(surface, self.color, self.rect)
 
+class Enemy:
+    def __init__(self, width = 20, height = 20, speed = 2, color = (255, 255, 255)):
+        self.x = random.randint(10, 790)
+        self.y = random.randint(10, 590)
+        self.width = width
+        self.height = height
+        self.speed = speed
+        self.color = color
+
+        self.rect = pygame.Rect(0, 0, width, height)
+        self.rect.center = (self.x, self.y)
+
+    def draw(self, surface):
+        pygame.draw.rect(surface, self.color, self.rect)
+
 # ===============
 # Main Game Loop
 # ===============
@@ -74,6 +88,9 @@ def main():
     background_color = (10, 10, 10)
 
     player = Player(width // 2, height // 2)
+    enemy = Enemy()
+    print(player.x, player.y)
+    print(enemy.x, enemy.y)
 
     clock = pygame.time.Clock()
 
@@ -90,6 +107,7 @@ def main():
         player.move(keys, width, height)
 
         player.draw(screen)
+        enemy.draw(screen)
 
         pygame.display.flip() # Update the display
         clock.tick(90)
